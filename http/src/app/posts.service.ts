@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { Post } from '../../../http-05-handling-errors/src/app/post.model'
 import { HttpClient } from '@angular/common/http'
-import { map } from 'rxjs/operators'
-import { Subject } from 'rxjs'
+import { catchError, map } from 'rxjs/operators'
+import { Subject, throwError } from 'rxjs'
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,10 @@ export class PostsService {
           }
           return postsArray
         }),
-      )
+        catchError(errorRes => {
+          // Send to analytics server
+          return throwError(errorRes)
+        }))
   }
 
   deletePosts() {
