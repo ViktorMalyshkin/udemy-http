@@ -20,29 +20,31 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.errorSub = this.postsService.error.subscribe(errorMessage => {
-      this.error = errorMessage;
-    });
+      this.error = errorMessage
+    })
     this.isFetching = true
     this.postsService.fetchPosts().subscribe(
       posts => {
         this.isFetching = false
         this.loadedPosts = posts
       }, error => {
+        this.isFetching = false
         this.error = error.message
       })
   }
 
   onCreatePost(postData: Post) {
-    this.postService.createAndStorePost(postData.title, postData.content)
+    this.postsService.createAndStorePost(postData.title, postData.content)
   }
 
   onFetchPosts() {
     // Send Http request
     this.isFetching = true
-    this.postService.fetchPosts().subscribe(posts => {
+    this.postsService.fetchPosts().subscribe(posts => {
       this.isFetching = false
       this.loadedPosts = posts
     }, error => {
+      this.isFetching = false
       this.error = error.message
       console.log(error)
     })
@@ -56,7 +58,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.errorSub.unsubscribe();
+    this.errorSub.unsubscribe()
   }
 
+  onHandleError() {
+    this.error = null
+  }
 }
