@@ -33,7 +33,7 @@
       </form>
     </div>
   </div>
-  <hr />
+  <hr/>
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
       <button class="btn btn-primary" (click)="onFetchPosts()">
@@ -58,7 +58,11 @@
           <p>{{ post.content }}</p>
         </li>
       </ul>
-      <p *ngIf="isFetching">Loading...</p>
+      <p *ngIf="isFetching && !error">Loading...</p>
+      <div class="alert alert-danger" *ngIf="error">
+        <h1>An Error Occurred!</h1>
+        <p>{{ error }}</p>
+      </div>
     </div>
   </div>
 </div>

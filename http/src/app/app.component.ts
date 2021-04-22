@@ -11,17 +11,20 @@ import { PostsService } from './posts.service'
 export class AppComponent implements OnInit {
   loadedPosts = []
   isFetching = false
+  error = null
 
   constructor(private http: HttpClient, private postService: PostsService) {
   }
 
   ngOnInit() {
     this.isFetching = true
-    this.postService.fetchPosts().subscribe(posts => {
-      this.isFetching = false
-      this.loadedPosts = posts
-
-    })
+    this.postService.fetchPosts().subscribe(
+      posts => {
+        this.isFetching = false
+        this.loadedPosts = posts
+      }, error => {
+        this.error = error.message
+      })
   }
 
   onCreatePost(postData: Post) {
@@ -34,12 +37,15 @@ export class AppComponent implements OnInit {
     this.postService.fetchPosts().subscribe(posts => {
       this.isFetching = false
       this.loadedPosts = posts
+    }, error => {
+      this.error = error.message
+      console.log(error)
     })
   }
 
   onClearPosts() {
     // Send Http request
-    this.postService.deletePosts().subscribe(()=>{
+    this.postService.deletePosts().subscribe(() => {
       this.loadedPosts = []
     })
   }
