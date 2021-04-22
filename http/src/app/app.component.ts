@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.fetchPosts()
   }
 
   onCreatePost(postData: { title: string; content: string }) {
@@ -27,9 +28,17 @@ export class AppComponent implements OnInit {
 
   onFetchPosts() {
     // Send Http request
+    this.fetchPosts()
   }
 
   onClearPosts() {
     // Send Http request
   }
+  fetchPosts(){
+    this.http.get('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json')
+      .subscribe((responceData) => {
+        console.log(responceData)
+      })
+  }
+
 }
