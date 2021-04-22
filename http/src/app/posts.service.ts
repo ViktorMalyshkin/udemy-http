@@ -1,21 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { Post } from '../../../http-05-handling-errors/src/app/post.model'
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators'
+import { Subject } from 'rxjs'
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PostsService {
+  error = new Subject<string>()
 
   constructor(private http: HttpClient) {
   }
 
   createAndStorePost(title: string, content: string) {
-    const postData: Post = { title, content };
+    const postData: Post = {title, content}
     this.http.post<{ name: string }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json', postData)
       .subscribe((responseData) => {
         console.log(responseData)
+      }, error => {
+        this.error.next(error.message)
       })
   }
 
@@ -34,7 +38,7 @@ export class PostsService {
 
   deletePosts() {
     return this.http.delete(
-      'https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
-    );
+      'https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
+    )
   }
 }
