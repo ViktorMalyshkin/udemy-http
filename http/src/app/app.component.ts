@@ -10,6 +10,7 @@ import { Post } from './post.model'
 })
 export class AppComponent implements OnInit {
   loadedPosts = []
+  isFetching = false
 
   constructor(private http: HttpClient) {
   }
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
     // Send Http request
     // console.log(postData)
     // this.http.post('https://ng-complete-guide-c56d3.firebaseio.com/posts.json', postData)
-    this.http.post<{name: string}>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json', postData)
+    this.http.post<{ name: string }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json', postData)
       .subscribe((responseData) => {
         console.log(responseData)
       })
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
   }
 
   fetchPosts() {
+    this.isFetching = true
     this.http.get<{ [key: string]: Post }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json')
       .pipe(
         map(responseData => {
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe((posts) => {
         // console.log(responseData)
+        this.isFetching = false
         this.loadedPosts = posts
       })
   }
