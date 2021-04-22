@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Post } from '../../../http-05-handling-errors/src/app/post.model'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { catchError, map } from 'rxjs/operators'
 import { Subject, throwError } from 'rxjs'
 
@@ -24,7 +24,8 @@ export class PostsService {
   }
 
   fetchPosts() {
-    return this.http.get<{ [key: string]: Post }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json')
+    return this.http.get<{ [key: string]: Post }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
+      {headers: new HttpHeaders({'Custom-Header': 'Hello'})})
       .pipe(
         map(responseData => {
           const postsArray: Post[] = []
