@@ -48,8 +48,9 @@ export class AppComponent implements OnInit {
           return postsArray
         }),
       )
-      .subscribe((responseData) => {
-        console.log(responseData)
+      .subscribe((posts) => {
+        // console.log(responseData)
+        this.loadedPosts = posts
       })
   }
 
