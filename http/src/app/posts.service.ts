@@ -30,8 +30,5 @@ export class PostsService {
           return postsArray
         }),
       )
-      .subscribe((posts) => {
-        // console.log(responseData)
-      })
   }
 }
