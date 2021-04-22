@@ -31,4 +31,10 @@ export class PostsService {
         }),
       )
   }
+
+  deletePosts() {
+    return this.http.delete(
+      'https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
+    );
+  }
 }
