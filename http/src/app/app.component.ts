@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators'
 import { Post } from './post.model'
+import { PostsService } from './posts.service'
 
 @Component({
   selector: 'app-root',
@@ -12,49 +13,24 @@ export class AppComponent implements OnInit {
   loadedPosts = []
   isFetching = false
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private postService: PostsService) {
   }
 
   ngOnInit() {
-    this.fetchPosts()
+    this.postService.fetchPosts()
   }
 
   onCreatePost(postData: Post) {
-    // Send Http request
-    // console.log(postData)
-    // this.http.post('https://ng-complete-guide-c56d3.firebaseio.com/posts.json', postData)
-    this.http.post<{ name: string }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json', postData)
-      .subscribe((responseData) => {
-        console.log(responseData)
-      })
+    this.postService.createAndStorePost(postData.title, postData.content)
   }
 
   onFetchPosts() {
     // Send Http request
-    this.fetchPosts()
+    this.postService.fetchPosts()
   }
 
   onClearPosts() {
     // Send Http request
-  }
-
-  fetchPosts() {
-    this.isFetching = true
-    this.http.get<{ [key: string]: Post }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json')
-      .pipe(
-        map(responseData => {
-          const postsArray: Post[] = []
-          for (const key in responseData) {
-            postsArray.push({...responseData[key], id: key})
-          }
-          return postsArray
-        }),
-      )
-      .subscribe((posts) => {
-        // console.log(responseData)
-        this.isFetching = false
-        this.loadedPosts = posts
-      })
   }
 
 }
