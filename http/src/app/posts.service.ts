@@ -33,7 +33,12 @@ export class PostsService {
     searchParams = searchParams.append('print', 'pretty')
     searchParams = searchParams.append('custom', 'key')
     return this.http.get<{ [key: string]: Post }>('https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
-      {headers: new HttpHeaders({'Custom-Header': 'Hello'}), params: searchParams})
+      {
+        headers: new HttpHeaders(
+          {'Custom-Header': 'Hello'}),
+        params: searchParams,
+        responseType: 'json',
+      })
       .pipe(
         map(responseData => {
           const postsArray: Post[] = []
@@ -53,18 +58,21 @@ export class PostsService {
       'https://udemy-cource-project-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
       {
         observe: 'events',
+        // responseType: 'json'
+        // responseType: 'body'
+        responseType: 'text',
       },
     ).pipe(
       tap((event: any) => {
         console.log(event)
-        if(event.type === HttpEventType.Sent){
+        if (event.type === HttpEventType.Sent) {
           // console.log(event.type)
           // ...
         }
-        if(event.type === HttpEventType.Response) {
+        if (event.type === HttpEventType.Response) {
           console.log(event.body)
         }
-      })
+      }),
     )
   }
 }
